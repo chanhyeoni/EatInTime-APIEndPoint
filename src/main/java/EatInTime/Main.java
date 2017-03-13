@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -19,11 +20,14 @@ import org.springframework.context.annotation.Bean;
 **/
 @SpringBootApplication
 public class Main {
-	
+
+    /**
+    * @SpringBootApplication lets the following functions run on start-up
+    * public static void main(String[] args){}
+    * public CommandLineRunner commandLineRunner(ApplicationContext ctx){} (requires @Bean annotation)
+    **/
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
-		// this line launches the spring boot application
-
     }
 
 
