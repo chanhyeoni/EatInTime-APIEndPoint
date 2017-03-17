@@ -16,7 +16,7 @@ import org.bson.Document;
 @RestController
 public class Controller {
 
-	// initialie the database with mongodb client
+	// initialize the database with mongodb client
     private static MongoDB dbObjMongoDb = new MongoDB("mongodb://heroku_tw4s316k:knsfmmk94vnt3onv3a3n88b5hq@ds145188.mlab.com:45188/heroku_tw4s316k", "heroku_tw4s316k");
 	
 	@RequestMapping("/")
@@ -50,7 +50,4 @@ public class Controller {
 		return str;
 
 	}
-
-
-
 }
