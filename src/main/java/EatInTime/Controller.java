@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
+import java.util.Date;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+
 /**
 * @RestController annotation tells you that this is a RESTful Web service component
 **/
@@ -50,4 +54,23 @@ public class Controller {
 		return str;
 
 	}
+
+
+	@RequestMapping("/getDateRange")
+	public @ResponseBody String getDateRange(){
+
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+		Date endDate = new Date();
+		Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.DATE, -7);
+    	Date startDate = cal.getTime();
+
+    	String endDateStr = df.format(endDate);
+    	String startDateStr = df.format(startDate);
+
+    	return "End Date --> " + endDateStr + " Start Date --> " + startDateStr;
+
+	}
+
 }
