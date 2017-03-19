@@ -8,6 +8,7 @@ import org.json.simple.parser.ParseException;
 import java.util.Date;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -44,17 +45,22 @@ public class MongoDB{
 
    public ArrayList<Document> getByDateRange(String tableName){
 
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     Date endDate = new Date();
     Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.DATE, -7);
+    cal.add(Calendar.MONTH, -7);
     Date startDate = cal.getTime();
+
+    String endDateStr = df.format(endDate);
+    String startDateStr = df.format(startDate);
 
     // filter out the date range 
     // check ou the MongoDB API JavaDoc 
 
-    FindIterable<Document> result = database.getCollection(tableName).find(
-      and(lt("date", endDate), gt("date", startDate))
-    );
+    Document query = new Document("date", new Document("$gte", startDateStr).append("$lte", endDateStr));
+
+    FindIterable<Document> result = database.getCollection(tableName).find(query);
 
     ArrayList<Document> docs = new ArrayList();
 
@@ -63,7 +69,7 @@ public class MongoDB{
     return docs;
    }
 
-   public void insert(String tableName, String data){
+   public int insert(String tableName, String data){
       // insert the document based on the name of the table
 
         // initialize the date and convert it to the string format
@@ -98,8 +104,13 @@ public class MongoDB{
                   break;
             }
            }
-        }catch(ParseException ex){
-         System.err.println("ParseException in insert of MongoDB.java -->" + ex.getMessage());
+           return 0; 
+        }catch(Exception ex){
+          System.err.println("Exception in the function insert in MongoDB.java -->" + ex.getMessage());
+          return -1;
+
         }
+
+        return -1;
    }
 }

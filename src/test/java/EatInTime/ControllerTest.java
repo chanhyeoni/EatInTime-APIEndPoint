@@ -27,7 +27,7 @@ public class ControllerTest {
 	public void greeterSaysHello() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("Hello World from Greeter" + "\n")));
+                .andExpect(content().string(equalTo("Index page rendered")));
 	}
 
 }
