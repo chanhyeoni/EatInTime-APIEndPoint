@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-public class MongoDB{
+public class MongoDB {
    // MongoDB Client 
     private MongoClientURI connectionString;
     private MongoClient mongo;
@@ -33,6 +33,18 @@ public class MongoDB{
     // JSON object
     private JSONParser parser = new JSONParser();
 
+    /**
+    * MongoDB constructor takes connection uri (connString) as well as the name of the databse (dbName)
+    * to initialize the MongoDB instance
+    * by means of using Java Client Library, the constructor utilizes MongoClientURI with the connection uri
+    * to get the connectionString of type MongoClientURI, initializes MongoDatabase of type MongoClient, 
+    * and get the MongoDatabase object by using the method getDatabase of the MongoClient instance,
+    * using the parameter dbName
+    *
+    * parameters
+    * connString (String) : connection uri (if local, it would be localhost)
+    * dbName (String) : the name of the database to be accessed
+    **/
    public MongoDB(String connString, String dbName){
       connectionString = new MongoClientURI(connString);
       mongo = new MongoClient(connectionString);
@@ -43,27 +55,48 @@ public class MongoDB{
          return database.getCollection(tableName);
    }
 
-   public ArrayList<Document> getByDateRange(String tableName){
+   /**
+   * getByDateRange gets you the data whose range of date lies between the current date
+   * and the date before the current date (startDate). startDate can be differed depending
+   * on the type of date (day, week, month)
+   *
+   * parameters
+   * dateType (DateType) : the enum type that helps set the date range
+   * ex. if dateType is W (week), then the start date will be one week before the current date
+   * tableName (String) : the name of the table or collection you would like to access and retrieve the data from
+   *
+   * returns
+   * docs (ArrayList<Document>) : the list of Document objects that are retrieved as a result of MongoDB query
+   **/
+   public ArrayList<Document> getByDateRange(DateType dateType, String tableName){
 
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+    
+    // get the current date (endDate)
     Date endDate = new Date();
+
+    // use dateType of enum DateType to set the date range
     Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.MONTH, -7);
+    switch (dateType){
+      case D:
+        cal.add(Calendar.DATE, -1);
+        break;
+      case W:
+        cal.add(Calendar.DATE, -7);
+        break;
+      case M:
+        cal.add(Calendar.MONTH, -1);
+        break;
+    }
     Date startDate = cal.getTime();
 
     String endDateStr = df.format(endDate);
     String startDateStr = df.format(startDate);
 
-    // filter out the date range 
-    // check ou the MongoDB API JavaDoc 
-
+    // filter out the date range and place the result into ArrayList of type Document
     Document query = new Document("date", new Document("$gte", startDateStr).append("$lte", endDateStr));
-
     FindIterable<Document> result = database.getCollection(tableName).find(query);
-
     ArrayList<Document> docs = new ArrayList();
-
     result.into(docs);
 
     return docs;
@@ -110,7 +143,7 @@ public class MongoDB{
           return -1;
 
         }
-
-        return -1;
    }
-}
+ }
+
+

@@ -2,6 +2,7 @@ package EatInTime;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.lang.Long;
@@ -60,9 +61,21 @@ public class Controller {
 	* the stringified data in JSON
 	**/
 	@RequestMapping("/getDataByDateRange")
-	public @ResponseBody String  getDataByDateRange(){
+	public @ResponseBody String  getDataByDateRange(@RequestParam(value="dateType", required=true, defaultValue="D") String dateType){
 
-		ArrayList<Document> documents = dbObjMongoDb.getByDateRange("rawData");
+		ArrayList<Document> documents = new ArrayList<Document>();
+		switch(dateType){
+			case "D":
+				documents = dbObjMongoDb.getByDateRange(DateType.D, "rawData");
+				break;
+			case "W":
+				documents = dbObjMongoDb.getByDateRange(DateType.W, "rawData");
+				break;
+			case "M":
+				documents = dbObjMongoDb.getByDateRange(DateType.M, "rawData");
+				break;			
+		}
+
 		String str = "";
 		for(Document doc : documents){
 			str = str.concat(doc.toJson());
@@ -84,7 +97,7 @@ public class Controller {
 	* - -1 if the insertion failed
 	**/
 	@RequestMapping("/insertNewData")
-	public @ResponseBody int insertNewData(@RequestParam(value="tableName", required=true), @RequestParam(value="inputLine", required=true)){
+	public @ResponseBody int insertNewData(@RequestParam(value="tableName", required=true) String tableName, @RequestParam(value="inputLine", required=true) String inputLine){
 		int isSuccess = dbObjMongoDb.insert(tableName, inputLine);
 		return isSuccess;
 	}

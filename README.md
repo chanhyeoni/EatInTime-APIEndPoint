@@ -1,5 +1,6 @@
 # Spring-Boot-RESTful-API-At-Home-Fridge-Monitoring-System
 
+This project is the RESTful API part of the At Home Food Monitoring System. It uses the Spring Boot.
 
 ## compiling
 ~~~
