@@ -114,7 +114,7 @@ public class MongoDB {
          // parse the json data
            Object obj = parser.parse(data);
            JSONObject jsonObj = (JSONObject) obj;
-           String tableName = jsonObj.get("tableName");
+           String tableName = (String) jsonObj.get("tableName");
 
            // solution 1 : store the data in the database
            // send the data to the database
