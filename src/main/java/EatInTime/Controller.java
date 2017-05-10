@@ -98,8 +98,8 @@ public class Controller {
 	* - the error message if the insertion fails
 	**/
 	@RequestMapping(value="/insertNewData", method=RequestMethod.POST)
-	public @ResponseBody String insertNewData(@RequestParam(value="tableName", required=true) String tableName, @RequestParam(value="inputLine", required=true) String inputLine){
-		String successMsg = dbObjMongoDb.insert(tableName, inputLine);
+	public @ResponseBody String insertNewData(@RequestParam(value="inputLine", required=true) String inputLine){
+		String successMsg = dbObjMongoDb.insert(inputLine);
 		return successMsg;
 	}
 
