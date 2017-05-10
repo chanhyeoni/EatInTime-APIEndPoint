@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.lang.Long;
 import java.util.ArrayList;
@@ -88,18 +89,18 @@ public class Controller {
 	* the function that gets the name of the table and the actual data from the parameters and inserts the data into the corresponding table (or collection)
 	*
 	* parameters
-	* tableName : the name of the table (collection) you would like to insert the data into
-	* inputLine : the data in JSON
+	* tableName (String) : the name of the table (collection) you would like to insert the data into
+	* inputLine (String) : the data in JSON
 	* 
 	* returns
-	* isSuccess : the integer result that tells you whether the insertion is successful
-	* - 0 if the insertion is successful
-	* - -1 if the insertion failed
+	* successMsg (String) : the integer result that tells you whether the insertion is successful
+	* - 'success' if the insertion is successful
+	* - the error message if the insertion fails
 	**/
-	@RequestMapping("/insertNewData")
-	public @ResponseBody int insertNewData(@RequestParam(value="tableName", required=true) String tableName, @RequestParam(value="inputLine", required=true) String inputLine){
-		int isSuccess = dbObjMongoDb.insert(tableName, inputLine);
-		return isSuccess;
+	@RequestMapping(value="/insertNewData", method=RequestMethod.POST)
+	public @ResponseBody String insertNewData(@RequestParam(value="tableName", required=true) String tableName, @RequestParam(value="inputLine", required=true) String inputLine){
+		String successMsg = dbObjMongoDb.insert(tableName, inputLine);
+		return successMsg;
 	}
 
 

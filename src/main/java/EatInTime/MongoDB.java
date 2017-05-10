@@ -102,7 +102,7 @@ public class MongoDB {
     return docs;
    }
 
-   public int insert(String tableName, String data){
+   public String insert(String tableName, String data){
       // insert the document based on the name of the table
 
         // initialize the date and convert it to the string format
@@ -126,21 +126,27 @@ public class MongoDB {
             switch (tableName){
                case "rawData":
                   // if the table is rawData
-                   // create a new document
-                    Document doc = new Document("date", strDate)
-                                    .append("temperature", jsonObj.get("temperature"))
-                                    .append("light", jsonObj.get("light"));            
-                    // insert the new document into the collection
-                    collection.insertOne(doc);
+                  // create a new document
+                  Document doc = new Document("date", strDate)
+                                  .append("NH3", jsonObj.get("NH3"))
+                                  .append("CO", jsonObj.get("CO"))
+                                  .append("NO2", jsonObj.get("NO2"))
+                                  .append("C3H8", jsonObj.get("C3H8"))
+                                  .append("C4H10", jsonObj.get("C4H10"))
+                                  .append("CH4", jsonObj.get("CH4"))
+                                  .append("H2", jsonObj.get("H2"))
+                                  .append("C2H5OH", jsonObj.get("C2H5OH"));            
+                  // insert the new document into the collection
+                  collection.insertOne(doc);
                   break;
                default:
                   break;
             }
            }
-           return 0; 
+           return "success"; 
         }catch(Exception ex){
-          System.err.println("Exception in the function insert in MongoDB.java -->" + ex.getMessage());
-          return -1;
+          String msg = "Exception in the function insert in MongoDB.java -->" + ex.getMessage();
+          return msg;
 
         }
    }
