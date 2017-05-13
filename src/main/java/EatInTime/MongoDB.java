@@ -102,7 +102,7 @@ public class MongoDB {
     return docs;
    }
 
-   public String insert(String tableName, String data){
+   public String insertRawData(RawData rawData){
       // insert the document based on the name of the table
 
         // initialize the date and convert it to the string format
@@ -111,37 +111,29 @@ public class MongoDB {
         String strDate = dateFormat.format(currentDate);
 
         try{
-         // parse the json data
-           Object obj = parser.parse(data);
-           JSONObject jsonObj = (JSONObject) obj;
 
            // solution 1 : store the data in the database
            // send the data to the database
            // 1. heroku mongodb database
            // access the collection
-           MongoCollection<Document> collection = database.getCollection(tableName);
+           MongoCollection<Document> collection = database.getCollection("rawData");
 
            if (collection != null){
 
-            switch (tableName){
-               case "rawData":
-                  // if the table is rawData
-                  // create a new document
-                  Document doc = new Document("date", strDate)
-                                  .append("NH3", jsonObj.get("NH3"))
-                                  .append("CO", jsonObj.get("CO"))
-                                  .append("NO2", jsonObj.get("NO2"))
-                                  .append("C3H8", jsonObj.get("C3H8"))
-                                  .append("C4H10", jsonObj.get("C4H10"))
-                                  .append("CH4", jsonObj.get("CH4"))
-                                  .append("H2", jsonObj.get("H2"))
-                                  .append("C2H5OH", jsonObj.get("C2H5OH"));            
-                  // insert the new document into the collection
-                  collection.insertOne(doc);
-                  break;
-               default:
-                  break;
-            }
+              // if the table is rawData
+              // create a new document
+              Document doc = new Document("date", strDate)
+                              .append("NH3", rawData.nh3)
+                              .append("CO", rawData.co)
+                              .append("NO2", rawData.no2)
+                              .append("C3H8", rawData.c3h8)
+                              .append("C4H10", rawData.c4h10)
+                              .append("CH4", rawData.ch4)
+                              .append("H2", rawData.h2)
+                              .append("C2H5OH", rawData.c2h5oh);            
+              // insert the new document into the collection
+              collection.insertOne(doc);
+
            }
            return "success"; 
         }catch(Exception ex){

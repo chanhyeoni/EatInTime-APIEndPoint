@@ -101,7 +101,7 @@ public class Controller {
 	@RequestMapping(value="/insertRawData", method=RequestMethod.POST)
 	public @ResponseBody String insertRawData(@RequestBody RawData inputLine){
 		//return inputLine.toString();
-		String successMsg = dbObjMongoDb.insert("rawData", inputLine);
+		String successMsg = dbObjMongoDb.insertRawData(inputLine);
 		return successMsg;
 	}
 
