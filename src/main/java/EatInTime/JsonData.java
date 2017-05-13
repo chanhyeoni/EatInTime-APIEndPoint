@@ -19,4 +19,8 @@ public class JsonData{
 		System.out.print(this.tableName + " ");
 		System.out.println(this.jsonData);
 	}
+
+	public String toString(){
+		String data = tableName + " " + jsonData;
+	}
 }
