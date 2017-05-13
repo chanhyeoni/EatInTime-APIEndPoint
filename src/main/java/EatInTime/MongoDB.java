@@ -102,7 +102,7 @@ public class MongoDB {
     return docs;
    }
 
-   public String insert(String data){
+   public String insert(String tableName, String data){
       // insert the document based on the name of the table
 
         // initialize the date and convert it to the string format
@@ -114,7 +114,6 @@ public class MongoDB {
          // parse the json data
            Object obj = parser.parse(data);
            JSONObject jsonObj = (JSONObject) obj;
-           String tableName = (String) jsonObj.get("tableName");
 
            // solution 1 : store the data in the database
            // send the data to the database
