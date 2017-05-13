@@ -6,6 +6,8 @@
 **/
 package EatInTime;
 
+import com.fasterxml.jackson.core.*;
+
 public class JsonData{
 	@JsonProperty("tableName")
 	public String tableName;
