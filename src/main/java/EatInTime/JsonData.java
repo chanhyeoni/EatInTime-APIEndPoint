@@ -22,5 +22,6 @@ public class JsonData{
 
 	public String toString(){
 		String data = tableName + " " + jsonData;
+		return data;
 	}
 }
