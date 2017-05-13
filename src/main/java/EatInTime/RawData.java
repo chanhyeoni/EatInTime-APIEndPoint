@@ -43,7 +43,7 @@ public class RawData{
 			Float.toString(this.co) + " " + 
 			Float.toString(this.no2) + " " + 
 			Float.toString(this.c3h8) + " " + 
-			Float.toString(this.cc4h10o) + " " + 
+			Float.toString(this.c4h10) + " " + 
 			Float.toString(this.ch4) + " " + 
 			Float.toString(this.h2) + " " + 
 			Float.toString(this.c2h5oh) + " ";
