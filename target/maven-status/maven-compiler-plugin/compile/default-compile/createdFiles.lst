@@ -2,4 +2,5 @@ EatInTime/DateType.class
 EatInTime/Controller.class
 EatInTime/Main.class
 EatInTime/MongoDB$1.class
+EatInTime/RawData.class
 EatInTime/MongoDB.class

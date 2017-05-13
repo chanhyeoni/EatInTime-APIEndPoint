@@ -20,5 +20,5 @@ curl http://localhost:8080
 
 If done correctly, you will see the following text.
 ~~~
-Hello World from Greeter
+Index Page Rendered
 ~~~
