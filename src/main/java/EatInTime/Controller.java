@@ -98,8 +98,8 @@ public class Controller {
 	* - 'success' if the insertion is successful
 	* - the error message if the insertion fails
 	**/
-	@RequestMapping(value="/insertNewData", method=RequestMethod.POST)
-	public @ResponseBody String insertNewData(@RequestBody JsonData inputLine){
+	@RequestMapping(value="/inserRawData", method=RequestMethod.POST)
+	public @ResponseBody String inserRawData(@RequestBody RawData inputLine){
 		return inputLine.toString();
 		//String successMsg = dbObjMongoDb.insert(inputLine);
 		//return inputLine;
