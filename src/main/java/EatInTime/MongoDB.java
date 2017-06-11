@@ -12,9 +12,11 @@ import java.text.DateFormat;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.result.UpdateResult;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.gt;
 import static com.mongodb.client.model.Filters.lt;
@@ -142,6 +144,89 @@ public class MongoDB {
 
         }
    }
+
+
+   public String insertResult(String filePath, String uid){
+
+        // initialize the date and convert it to the string format
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String strDate = dateFormat.format(currentDate);
+
+        try{
+
+           MongoCollection<Document> collection = database.getCollection("result");
+
+           if (collection != null){
+              // find the document that matches the type
+              Document whereQuery = new Document();
+              whereQuery.put("filePath", filePath);
+
+              UpdateResult result = collection.updateOne(whereQuery, new Document("$set", new Document("uid", uid).append("date", strDate)));
+              long nDocUpdate = result.getModifiedCount();
+
+              if (nDocUpdate  <= 0){
+                // insert
+                // create a new document
+                Document doc = new Document("date", strDate)
+                                .append("filePath", filePath)
+                                .append("uid", uid);         
+                // insert the new document into the collection
+                collection.insertOne(doc);
+
+              }
+
+              // if the table is rawData
+
+           }
+           return "success"; 
+        }catch(Exception ex){
+          String msg = "Exception in the function insert in MongoDB.java -->" + ex.getMessage();
+          return msg;
+
+        }
+    }
+
+    public String statusAlert(String type,  String msg){
+
+        // initialize the date and convert it to the string format
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String strDate = dateFormat.format(currentDate);
+
+        try{
+
+           MongoCollection<Document> collection = database.getCollection("status");
+
+           if (collection != null){
+              // find the document that matches the type
+              Document whereQuery = new Document();
+              whereQuery.put("type", type);
+
+              UpdateResult result = collection.updateOne(whereQuery, new Document("$set", new Document("msg", msg)));
+              long nDocUpdate = result.getModifiedCount();
+
+              if (nDocUpdate  <= 0){
+                // insert
+                // create a new document
+                Document doc = new Document("date", strDate)
+                                .append("type", type)
+                                .append("msg", msg);         
+                // insert the new document into the collection
+                collection.insertOne(doc);
+
+              }
+
+           }
+           return "success"; 
+        }catch(Exception ex){
+          String exception_msg = "Exception in the function insert in MongoDB.java -->" + ex.getMessage();
+          return exception_msg;
+
+        }
+    }    
+
+
  }
 
 

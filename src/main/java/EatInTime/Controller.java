@@ -85,7 +85,6 @@ public class Controller {
 		return str;
 	}
 
-
 	/**
 	* the function that gets the name of the table and the actual data from the parameters and inserts the data into the corresponding table (or collection)
 	*
@@ -102,7 +101,34 @@ public class Controller {
 	public @ResponseBody String insertRawData(@RequestBody RawData inputLine){
 		//return inputLine.toString();
 		String successMsg = dbObjMongoDb.insertRawData(inputLine);
-		return successMsg;
+		return successMsg + "\n";
+	}
+
+	/**
+	* the function takes the path of the file in which the machine learning model is saved and 
+	* call the MondoDB function to insert the data to the storage space
+	*
+	* parameters
+	* filePath (String) : the path to the machine learning model
+	* 
+	* returns
+	* successMsg (String) : the integer result that tells you whether the insertion is successful
+	* - 'success' if the insertion is successful
+	* - the error message if the insertion fails
+	**/
+	@RequestMapping(value="/insertResult")
+	public @ResponseBody String insertResult(@RequestParam(value="filePath", required=true) String filePath, @RequestParam(value="uid", required=true) String uid){
+		//return inputLine.toString();
+		String successMsg = dbObjMongoDb.insertResult(filePath, uid);
+		return successMsg + "\n";
+	}
+
+
+	@RequestMapping(value="/statusAlert")
+	public @ResponseBody String statusAlert(@RequestParam(value="type", required=true) String type, @RequestParam(value="msg", required=true) String msg){
+		//return inputLine.toString();
+		String successMsg = dbObjMongoDb.statusAlert(type, msg);
+		return successMsg + "\n";
 	}
 
 

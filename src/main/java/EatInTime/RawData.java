@@ -1,7 +1,7 @@
 /**
-* JsonData is the model used to insert data into the NoSQL database repository. 
+* RawData is the model used to insert data, whose collection is rawData, into the NoSQL database repository. 
 * The class has the following members
-* tableName (String) : the name of the table (or collection)
+* nh3 (float) : the measured value of NH3 (nitrogen hydroxide)
 * jsoNData (String) : the raw data formatted in json 
 **/
 package EatInTime;
@@ -36,17 +36,5 @@ public class RawData{
 		System.out.print(this.ch4 + " ");
 		System.out.print(this.h2 + " ");
 		System.out.println(this.c2h5oh + " ");
-	}
-
-	public String toString(){
-		String data = Float.toString(this.nh3) + " " + 
-			Float.toString(this.co) + " " + 
-			Float.toString(this.no2) + " " + 
-			Float.toString(this.c3h8) + " " + 
-			Float.toString(this.c4h10) + " " + 
-			Float.toString(this.ch4) + " " + 
-			Float.toString(this.h2) + " " + 
-			Float.toString(this.c2h5oh) + " ";
-		return data;
 	}
 }
