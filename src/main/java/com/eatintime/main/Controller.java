@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.Long;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class Controller {
 	@RequestMapping("/")
 	@ResponseBody
 	public String index(){
-		return "Index page rendered";
+		return "Index page rendered" + "\n";
 	}
 
 	/**
@@ -59,25 +60,27 @@ public class Controller {
 
 	/**
 	* the function that retrieves the data within a specific date range
-	* to do
-	* 1. add the parameters (day, month, year, ...) --> will use switch method
+	* 
+	* parameters
+	* tableName (String) : the name of the table (collection) you would like to insert the data into
+	* dateType (String) : the type of date to retrieve (date (D), week (W), month(M), year(Y)) in JSON
 	*
 	* returns
 	* the stringified data in JSON
 	**/
-	@RequestMapping("/getDataByDateRange")
-	public @ResponseBody String  getDataByDateRange(@RequestParam(value="dateType", required=true, defaultValue="D") String dateType){
+	@RequestMapping("/getDataByDateRange/{tableName}/{dateType}")
+	public @ResponseBody String getDataByDateRange(@PathVariable String tableName, @PathVariable String dateType){
 
 		ArrayList<Document> documents = new ArrayList<Document>();
 		switch(dateType){
 			case "D":
-				documents = dbObjMongoDb.getByDateRange(DateType.D, "rawData");
+				documents = dbObjMongoDb.getDataByDateRange(DateType.D, tableName);
 				break;
 			case "W":
-				documents = dbObjMongoDb.getByDateRange(DateType.W, "rawData");
+				documents = dbObjMongoDb.getDataByDateRange(DateType.W, tableName);
 				break;
 			case "M":
-				documents = dbObjMongoDb.getByDateRange(DateType.M, "rawData");
+				documents = dbObjMongoDb.getDataByDateRange(DateType.M, tableName);
 				break;			
 		}
 
@@ -119,7 +122,7 @@ public class Controller {
 	* - 'success' if the insertion is successful
 	* - the error message if the insertion fails
 	**/
-	@RequestMapping(value="/insertResult")
+	@RequestMapping(value="/insertResult", method=RequestMethod.POST)
 	public @ResponseBody String insertResult(@RequestParam(value="filePath", required=true) String filePath, @RequestParam(value="uid", required=true) String uid){
 		//return inputLine.toString();
 		String successMsg = dbObjMongoDb.insertResult(filePath, uid);
@@ -127,20 +130,12 @@ public class Controller {
 	}
 
 
-	@RequestMapping(value="/statusAlert")
-	public @ResponseBody String statusAlert(@RequestParam(value="type", required=true) String type, @RequestParam(value="msg", required=true) String msg){
+	@RequestMapping(value="/insertStatus", method=RequestMethod.POST)
+	public @ResponseBody String insertStatus(@RequestParam(value="type", required=true) String type, @RequestParam(value="msg", required=true) String msg){
 		//return inputLine.toString();
-		String successMsg = dbObjMongoDb.statusAlert(type, msg);
+		String successMsg = dbObjMongoDb.insertStatus(type, msg);
 		return successMsg + "\n";
 	}
-
-
-	// @RequestMapping(value="/getStatus")
-	// public @ReponseBody String getStatus(){
-	// 	return dbObjMongoDb.getStatus();
-	// }
-
-
 
 
 }

@@ -72,7 +72,7 @@ public class MongoDB {
    * returns
    * docs (ArrayList<Document>) : the list of Document objects that are retrieved as a result of MongoDB query
    **/
-   public ArrayList<Document> getByDateRange(DateType dateType, String tableName){
+   public ArrayList<Document> getDataByDateRange(DateType dateType, String tableName){
 
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
@@ -189,7 +189,7 @@ public class MongoDB {
         }
     }
 
-    public String statusAlert(String type,  String msg){
+    public String insertStatus(String type,  String msg){
 
         // initialize the date and convert it to the string format
         Date currentDate = new Date();
