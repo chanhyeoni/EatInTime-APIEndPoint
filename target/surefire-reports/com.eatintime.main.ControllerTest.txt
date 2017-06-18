@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.eatintime.main.ControllerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.36 sec - in com.eatintime.main.ControllerTest
