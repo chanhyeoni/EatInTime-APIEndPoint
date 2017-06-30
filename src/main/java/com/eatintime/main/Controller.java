@@ -41,22 +41,26 @@ public class Controller {
 	}
 
 	/**
-	* the function to retreive all the data
-	* --> will be deprecated
+	* the function to retreive all the data relevant to a particular user
+	* parameters
+	* user_key (int) : the parimary key of the table User from RDBMS
 	*
 	* returns
-	* the stringified data in JSON
-	**/
-	@RequestMapping("/getData")
-	public @ResponseBody String  getData(){
-		MongoCollection<Document> documents = dbObjMongoDb.get("rawData");
-		String str = "";
-		for(Document doc : documents.find()){
-			str = str.concat(doc.toJson());
-		}
-		return str;
+	* str (String) : the stringified data in JSON that is retrieved from both relational database and noSQL database
+	*/
+	// @RequestMapping("/getAllDataforUser/{user_key}")
+	// public @ResponseBody String  getAllDataforUser(@PathVariable int user_key){
+	// 	if (user_key > 0){
+	// 		// call the User and device data from the MySQL
+	// 	}
+	// 	MongoCollection<Document> documents = dbObjMongoDb.getAllDataforUser(user_key);
+	// 	String str = "";
+	// 	for(Document doc : documents.find()){
+	// 		str = str.concat(doc.toJson());
+	// 	}
+	// 	return str;
 
-	}
+	// }
 
 	/**
 	* the function that retrieves the data within a specific date range

@@ -10,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.lang.Float;
 
 public class RawData{
+	@JsonProperty("device_key")
+	public int device_key;
+
 	@JsonProperty("NH3")
 	public float nh3;
 	@JsonProperty("CO")
@@ -28,6 +31,7 @@ public class RawData{
 	public float c2h5oh;
 
 	public void print(){
+		System.out.print(this.device_key + " ");
 		System.out.print(this.nh3 + " ");
 		System.out.print(this.co + " ");
 		System.out.print(this.no2 + " ");

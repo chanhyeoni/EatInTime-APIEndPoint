@@ -55,9 +55,30 @@ public class MongoDB {
       database = mongo.getDatabase(dbName);
    }
 
-   public MongoCollection<Document> get(String tableName){
-         return database.getCollection(tableName);
-   }
+   /**
+   * getAllDataforUser joins all the data for a particular user using user_key
+   * and returns the data aggregar
+   * 
+   **/
+   // public MongoCollection<Document> getAllDataforUser(int device_key){
+
+   //  // for test --> THIS MUST CHANGE!!!!
+   //  // if device_key is zero, grab the MongoDB data that does not have device_key data
+   //  // otherwise, use that key in order to retrieve the data 
+   //  // whose device_key corresponds to the parameter
+   //  boolean device_key_exists = true;
+   //  if (device_key == 0){
+   //    device_key_exists = true;
+   //  }
+
+   //  Document query = new Document("$device_key", new Document("$exists", device_key_exists));    
+
+   //  FindIterable<Document> result = database.getCollection(tableName).find(query);
+
+
+
+
+   // }
 
    /**
    * getByDateRange gets you the data whose range of date lies between the current date
@@ -127,6 +148,7 @@ public class MongoDB {
               // if the table is rawData
               // create a new document
               Document doc = new Document("date", strDate)
+                              .append("device_key", rawData.device_key)
                               .append("NH3", rawData.nh3)
                               .append("CO", rawData.co)
                               .append("NO2", rawData.no2)
