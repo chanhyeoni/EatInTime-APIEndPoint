@@ -1,6 +1,9 @@
 com/eatintime/model/DateType.class
 com/eatintime/main/Controller.class
 com/eatintime/api/MongoDB$1.class
+com/eatintime/model/UserInfo.class
 com/eatintime/api/MongoDB.class
 com/eatintime/main/Main.class
+com/eatintime/api/MySQL.class
+com/eatintime/model/Device.class
 com/eatintime/model/RawData.class

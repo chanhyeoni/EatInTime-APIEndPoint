@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.Long;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
@@ -19,7 +20,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 
-import com.eatintime.api.MongoDB;
+import com.eatintime.api.*;
 import com.eatintime.model.*;
 
 /**
@@ -30,6 +31,8 @@ public class Controller {
 
 	// initialize the database with mongodb client
     private static MongoDB dbObjMongoDb = new MongoDB("mongodb://heroku_tw4s316k:knsfmmk94vnt3onv3a3n88b5hq@ds145188.mlab.com:45188/heroku_tw4s316k", "heroku_tw4s316k");
+    // MySQL client
+    private static MySQL mySQLClient = null;
 	
 	/**
 	* the index method is used to ensure the project is running correctly
@@ -48,19 +51,35 @@ public class Controller {
 	* returns
 	* str (String) : the stringified data in JSON that is retrieved from both relational database and noSQL database
 	*/
-	// @RequestMapping("/getAllDataforUser/{user_key}")
-	// public @ResponseBody String  getAllDataforUser(@PathVariable int user_key){
-	// 	if (user_key > 0){
-	// 		// call the User and device data from the MySQL
-	// 	}
-	// 	MongoCollection<Document> documents = dbObjMongoDb.getAllDataforUser(user_key);
-	// 	String str = "";
-	// 	for(Document doc : documents.find()){
-	// 		str = str.concat(doc.toJson());
-	// 	}
-	// 	return str;
+	@RequestMapping("/getAllDataforUser/{user_key}")
+	public @ResponseBody String getAllDataforUser(@PathVariable int user_key) throws Exception {
+		// // initialize mySQL client
+		// mySQLClient = new MySQL("jdbc:mysql://sv2k4e0g6vr7swz6:jrfltaqdu0rdcljp@lg7j30weuqckmw07.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/cbege7jwoter3szr");
+		// // use user_key in order to retrieve the list of devices along with the user info
+  		// UserInfo userInfo = mySQLClient.retrieveUserAndDevice(user_key);
 
-	// }
+		// test
+  		UserInfo userInfo = new UserInfo();
+  		userInfo.userKey = user_key;
+  		userInfo.userEmail = "test@gmail.com";
+  		userInfo.firstName = "test";
+  		userInfo.lastName = "test";
+  		Device device = new Device();
+  		device.device_key = 1;
+  		device.user_key = 1;
+  		device.device_id = "test_device_1";
+  		userInfo.devices = new LinkedList<Device>();
+  		userInfo.devices.add(device);
+  		// test
+
+		Document userDoc = dbObjMongoDb.getAllDataforUser(userInfo);
+		String str = userDoc.toJson();
+		// for(Document doc : documents){
+		// 	str = str.concat(doc.toJson());
+		// }
+		return str;
+
+	}
 
 	/**
 	* the function that retrieves the data within a specific date range

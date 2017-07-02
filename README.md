@@ -1,6 +1,6 @@
-# Spring-Boot-RESTful-API-At-Home-Fridge-Monitoring-System
+# EatInTime-APIEndPoint
 
-This project is the RESTful API part of the At Home Food Monitoring System. It uses the Spring Boot.
+This project is the RESTful API part of the EatIntime. It uses the Spring Boot.
 
 ## compiling
 ~~~

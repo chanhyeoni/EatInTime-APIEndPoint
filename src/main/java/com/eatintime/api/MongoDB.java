@@ -5,8 +5,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 
-import java.util.Date;
-import java.util.Calendar;
+import org.bson.conversions.*;
+
+
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 
@@ -16,11 +17,20 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.result.UpdateResult;
+import com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.gt;
 import static com.mongodb.client.model.Filters.lt;
+
+import java.util.Date;
+import java.util.Calendar;
+import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.List;
+
+import java.lang.Integer;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -36,6 +46,7 @@ public class MongoDB {
 
     // JSON object
     private JSONParser parser = new JSONParser();
+
 
     /**
     * MongoDB constructor takes connection uri (connString) as well as the name of the databse (dbName)
@@ -56,29 +67,50 @@ public class MongoDB {
    }
 
    /**
-   * getAllDataforUser joins all the data for a particular user using user_key
-   * and returns the data aggregar
-   * 
+   * getAllDataforUser joins all the data for a particular user using the data userData of type UserInfo
+   * and returns the aggregated json version containing the following information:
+   * 1. the user information
+   * 2. the list of devices associated with the user
+   * 3. the list of quantitative data associated with each device the user has
+   * the follwing information above will be in the arrayList
+   *
+   * parameters
+   * userData (UserInfo) : the model data containing the information about user
+   *
+   * returns
+   * userDoc (Document) : the Document instance containing the data about the user, the devices, and the measured data
+   *  
    **/
-   // public MongoCollection<Document> getAllDataforUser(int device_key){
+   public Document getAllDataforUser(UserInfo userData){
+    // make a new document for the user using the parameter userData
+    Document userDoc = new Document("userKey", Integer.toString(userData.userKey))
+      .append("userEmail", userData.userEmail)
+      .append("firstName", userData.firstName)
+      .append("lastName", userData.lastName);
 
-   //  // for test --> THIS MUST CHANGE!!!!
-   //  // if device_key is zero, grab the MongoDB data that does not have device_key data
-   //  // otherwise, use that key in order to retrieve the data 
-   //  // whose device_key corresponds to the parameter
-   //  boolean device_key_exists = true;
-   //  if (device_key == 0){
-   //    device_key_exists = true;
-   //  }
+    ArrayList<Document> device_docs = new ArrayList();
 
-   //  Document query = new Document("$device_key", new Document("$exists", device_key_exists));    
+    for (Device device : userData.devices){
 
-   //  FindIterable<Document> result = database.getCollection(tableName).find(query);
+      // prepare the query for the MongoDB database
+      Document query = new Document("$lookup", 
+        new Document("from", "rawData")
+          .append("localField", Integer.toString(device.device_key))
+          .append("foreignField", Integer.toString(device.device_key))
+          .append("as", "rawData_doc"));
+  
+      AggregateIterable<Document> result = database.getCollection("status").aggregate(
+        Arrays.asList(query)
+      );
 
+      result.into(device_docs);
 
+    }
 
+    userDoc.append("device_docs", device_docs);
 
-   // }
+    return userDoc;
+   }
 
    /**
    * getByDateRange gets you the data whose range of date lies between the current date
