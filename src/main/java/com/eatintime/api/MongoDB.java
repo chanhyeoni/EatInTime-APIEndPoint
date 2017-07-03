@@ -89,8 +89,12 @@ public class MongoDB {
       .append("lastName", userData.lastName);
 
     ArrayList<Document> device_docs = new ArrayList();
+    ArrayList<Document> device_data_doc = new ArrayList();
 
     for (Device device : userData.devices){
+
+      Document device_doc = new Document("device_key", Integer.toString(device.device_key))
+        .append("device_id", device.device_id);
 
       // prepare the query for the MongoDB database
       Document query = new Document("$lookup", 
@@ -103,7 +107,13 @@ public class MongoDB {
         Arrays.asList(query)
       );
 
-      result.into(device_docs);
+      result.into(device_data_doc);
+
+      device_doc.append("device_data", device_data_doc);
+
+      device_docs.add(device_doc);
+
+      device_data_doc = new ArrayList();
 
     }
 
